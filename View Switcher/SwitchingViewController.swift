@@ -9,13 +9,49 @@
 import UIKit
 
 class SwitchingViewController: UIViewController {
+    
+    private var blueViewController: BlueViewController!
+    private var yellowViewController: YellowViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        blueViewController =
+            storyboard?.instantiateViewController(withIdentifier: "Blue")
+            as! BlueViewController
+        blueViewController.view.frame = view.frame
+        switchViewController(from: nil, to: blueViewController)  // helper method
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    @IBAction func switchViews(sender: UIBarButtonItem){
+        // Create View Controller, if required
+        if yellowViewController.view.superview == nil {
+            if yellowViewController == nil {
+                yellowViewController =
+                    storyboard?.instantiateViewController(withIdentifier: "Yellow") as! YellowViewController
+            }
+        } else if blueViewController.view.superview == nil {
+            if blueViewController == nil {
+                blueViewController = storyboard?.instantiateViewController(withIdentifier: "Blue") as! BlueViewController
+            }
+        }
+        
+        // Switch View Controllers
+        if blueViewController != nil
+            && blueViewController!.view.superview != nil {
+            yellowViewController.view.frame = view.frame
+            switchViewController(from: blueViewController,
+                                 to: yellowViewController)
+        } else {
+            blueViewController.view.frame = view.frame
+            switchViewController(from: yellowViewController,
+                                 to: blueViewController)
+        }
+    }
 
     /*
     // MARK: - Navigation
